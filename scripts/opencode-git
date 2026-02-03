@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+CONTAINER_NAME="opencode-$(basename "$(pwd)")"
+
+mkdir -p "$HOME/.local/state/opencode" "$HOME/.local/share/opencode" "$HOME/.config/opencode"
+
+# Git config used inside the container. We keep it under the same opencode
+# config directory that is already mounted into the container.
+GIT_CONFIG_HOST="${HOME}/.config/opencode/gitconfig"
+mkdir -p "$(dirname "${GIT_CONFIG_HOST}")"
+touch "${GIT_CONFIG_HOST}"
+
+# Defaults can be overridden per-user.
+OPENCODE_GIT_NAME="${OPENCODE_GIT_NAME:-OpenCode Agent}"
+OPENCODE_GIT_EMAIL="${OPENCODE_GIT_EMAIL:-opencode@localhost}"
+
+exec docker run --rm --tty --interactive \
+  --name "$CONTAINER_NAME" \
+  --add-host=host.docker.internal:host-gateway \
+  -v "$HOME/.local/state/opencode:/root/.local/state/opencode:Z" \
+  -v "$HOME/.local/share/opencode:/root/.local/share/opencode:Z" \
+  -v "$HOME/.config/opencode:/root/.config/opencode:Z" \
+  -e GIT_CONFIG_GLOBAL=/root/.config/opencode/gitconfig \
+  -e OPENCODE_GIT_NAME="$OPENCODE_GIT_NAME" \
+  -e OPENCODE_GIT_EMAIL="$OPENCODE_GIT_EMAIL" \
+  -p 127.0.0.1:1455:1455 \
+  -v "$(pwd):/app:Z" \
+  opencode-container \
+  bash -lc 'git config --global user.name "$OPENCODE_GIT_NAME"; git config --global user.email "$OPENCODE_GIT_EMAIL"; git config --global --replace-all safe.directory /app; git config --global commit.gpgsign false; git config --global tag.gpgsign false; exec opencode "$@"' -- "$@"

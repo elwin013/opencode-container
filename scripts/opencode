@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+CONTAINER_NAME="opencode-$(basename "$(pwd)")"
+
+mkdir -p "$HOME/.local/state/opencode" "$HOME/.local/share/opencode" "$HOME/.config/opencode"
+
+exec docker run --rm --tty --interactive \
+  --name "$CONTAINER_NAME" \
+  --add-host=host.docker.internal:host-gateway \
+  -v "$HOME/.local/state/opencode:/root/.local/state/opencode:Z" \
+  -v "$HOME/.local/share/opencode:/root/.local/share/opencode:Z" \
+  -v "$HOME/.config/opencode:/root/.config/opencode:Z" \
+  -p 127.0.0.1:1455:1455 \
+  -v "$(pwd):/app:Z" \
+  opencode-container "$@"
