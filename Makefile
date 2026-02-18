@@ -1,6 +1,10 @@
 build:
 	docker build -t opencode-container -f Containerfile .
 	$(MAKE) addbin addbin-git
+
+build-java:
+	docker build -t opencode-container-java -f Containerfile-java .
+	$(MAKE) addbin addbin-git addbin-java addbin-java-git
 	
 addbin:
 	echo "Adding opencode to ~/.local/bin/opencode"
@@ -11,6 +15,16 @@ addbin-git:
 	echo "Adding opencode-git to ~/.local/bin/opencode-git"
 	cp scripts/opencode-git ~/.local/bin/opencode-git
 	chmod +x ~/.local/bin/opencode-git
+
+addbin-java:
+	echo "Adding opencode-java to ~/.local/bin/opencode-java"
+	cp scripts/opencode-java ~/.local/bin/opencode-java
+	chmod +x ~/.local/bin/opencode-java
+
+addbin-java-git:
+	echo "Adding opencode-java-git to ~/.local/bin/opencode-java-git"
+	cp scripts/opencode-java-git ~/.local/bin/opencode-java-git
+	chmod +x ~/.local/bin/opencode-java-git
 
 removebin:
 	rm -f ~/.local/bin/opencode

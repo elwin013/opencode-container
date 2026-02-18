@@ -2,6 +2,7 @@
 
 set -euo pipefail
 
+CONTAINER_IMAGE="${CONTAINER_IMAGE:-opencode-container}"
 CONTAINER_NAME="opencode-$(basename "$(pwd)")"
 
 mkdir -p "$HOME/.local/state/opencode" "$HOME/.local/share/opencode" "$HOME/.config/opencode"
@@ -14,4 +15,4 @@ exec docker run --rm --tty --interactive \
   -v "$HOME/.config/opencode:/root/.config/opencode:Z" \
   -p 127.0.0.1:1455:1455 \
   -v "$(pwd):/app:Z" \
-  opencode-container "$@"
+  "$CONTAINER_IMAGE" "$@"
