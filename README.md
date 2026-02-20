@@ -12,17 +12,27 @@ Using Fedora 43 as the base container.
 
 ## Install
 
+For the standard container:
+
 ```sh
 make build
 ```
 
+For the container with Java tools pre-installed:
+
+```sh
+make build-java
+```
+
 This will:
 
-- Build the `opencode-container` image (see `Containerfile`)
+- Build the `opencode-container` or `opencode-container-java` image (see `Containerfile` / `Containerfile-java`)
 - Install small wrapper scripts to `~/.local/bin/`:
 
 - `~/.local/bin/opencode`
 - `~/.local/bin/opencode-git`
+- `~/.local/bin/opencode-java` (if `make build-java` was used)
+- `~/.local/bin/opencode-java-git` (if `make build-java` was used)
 
 Wrapper sources live in `scripts/`.
 
@@ -36,11 +46,23 @@ Run in the project folder:
 opencode
 ```
 
+Or for Java projects:
+
+```sh
+opencode-java
+```
+
 
 If you want the container to have a dedicated git identity/config so the agent can create intermediate commits:
 
 ```sh
 opencode-git
+```
+
+Or for Java projects with git identity:
+
+```sh
+opencode-java-git
 ```
 
 
@@ -74,5 +96,5 @@ The wrapper creates the file if it doesn't exist, so the git config is persisted
 
 ```sh
 make removebin
-docker rmi opencode-container
+docker rmi opencode-container opencode-container-java
 ```
