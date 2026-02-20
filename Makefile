@@ -29,3 +29,5 @@ addbin-java-git:
 removebin:
 	rm -f ~/.local/bin/opencode
 	rm -f ~/.local/bin/opencode-git
+	rm -f ~/.local/bin/opencode-java
+	rm -f ~/.local/bin/opencode-java-git
