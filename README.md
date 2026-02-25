@@ -52,6 +52,12 @@ Or for Java projects:
 opencode-java
 ```
 
+Pass OpenCode arguments normally:
+
+```sh
+opencode -s session-id
+```
+
 
 If you want the container to have a dedicated git identity/config so the agent can create intermediate commits:
 
@@ -64,6 +70,15 @@ Or for Java projects with git identity:
 ```sh
 opencode-java-git
 ```
+
+To pass extra container runtime flags, use `--` to separate container flags from OpenCode flags:
+
+```sh
+opencode --network host -e FOO=bar -- -s session-id
+opencode-git --cpus 2 -- --help
+```
+
+Without `--`, all arguments are forwarded to OpenCode.
 
 
 Default git credentials for the agent:
