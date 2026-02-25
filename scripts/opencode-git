@@ -3,7 +3,7 @@
 set -euo pipefail
 
 CONTAINER_IMAGE="${CONTAINER_IMAGE:-opencode-container}"
-CONTAINER_NAME="opencode-$(basename "$(pwd)")"
+CONTAINER_NAME="opencode-$(basename "$(pwd)")-$(date +%Y%m%d%H%M%S)"
 
 DOCKER_RUN_ARGS=()
 OPENCODE_ARGS=("$@")
