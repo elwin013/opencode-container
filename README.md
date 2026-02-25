@@ -30,6 +30,7 @@ This will:
 - Install small wrapper scripts to `~/.local/bin/`:
 
 - `~/.local/bin/opencode`
+- `~/.local/bin/opencode-auth`
 - `~/.local/bin/opencode-git`
 - `~/.local/bin/opencode-java` (if `make build-java` was used)
 - `~/.local/bin/opencode-java-git` (if `make build-java` was used)
@@ -45,6 +46,16 @@ Run in the project folder:
 ```sh
 opencode
 ```
+
+`opencode` does not expose the auth callback port, so you can run multiple containers in parallel.
+
+When you need to authenticate/login, use:
+
+```sh
+opencode-auth
+```
+
+`opencode-auth` exists only to expose `127.0.0.1:1455` for the callback flow.
 
 Or for Java projects:
 
@@ -94,7 +105,9 @@ What the wrapper does:
   - `~/.local/state/opencode`
   - `~/.local/share/opencode`
   - `~/.config/opencode`
-- Exposes `127.0.0.1:1455` (login callback)
+
+
+`opencode-auth` additionally exposes `127.0.0.1:1455` (login callback).
 
 
 `opencode-git` additionally sets a git identity *inside the container* and marks `/app` as a safe directory.
